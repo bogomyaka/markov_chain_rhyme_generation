@@ -18,7 +18,7 @@ class Sentence:
             min_words: минимальное количество слов в предложении.
             max_words: максимальное количество слов в предложении.
             max_tries: максимальное количество попыток на генерацию 
-            предложения с заданными параметрами. 
+            предложения с заданными параметрами.  
         """
         self.text = self.generate_sentence(model, min_words, max_words, max_tries)
         self.last_word = self.get_last_word(self.text)
