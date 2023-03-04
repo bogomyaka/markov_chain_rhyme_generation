@@ -4,7 +4,7 @@ from nltk.corpus import cmudict
 
 MIN_WORDS = 5
 MAX_WORDS = 8
-MAX_TRIES = 1000
+MAX_TRIES = 10000
 STRESSES = {'0', '1', '2'}
 
 class Sentence:
@@ -20,23 +20,12 @@ class Sentence:
             max_tries: максимальное количество попыток на генерацию 
             предложения с заданными параметрами.  
         """
-        self.text = self.generate_sentence(model, min_words, max_words, max_tries)
-        self.last_word = self.get_last_word(self.text)
-        self.end_syllables = self.get_endings(self.last_word)
-
-    def generate_sentence(self, model, min_words=MIN_WORDS, max_words=MAX_WORDS, max_tries=MAX_TRIES) -> str:
-        """
-        Генерирует предложение. 
-
-            model: модель, генерирующая текст.
-            min_words: минимальное количество слов в предложении.
-            max_words: максимальное количество слов в предложении.
-            max_tries: максимальное количество попыток на генерацию
-            предложения с заданными параметрами.
-        """
-        return model.make_sentence(min_words=MIN_WORDS, max_words=MAX_WORDS, max_tries=MAX_TRIES)
+        self.text = model.make_sentence(min_word=min_words, max_words=max_words, tries=max_tries)
+        self.last_word = Sentence.get_last_word(self.text)
+        self.end_syllables = Sentence.get_endings(self.last_word)
     
-    def get_last_word(self, sentence: str) -> str:
+    @staticmethod
+    def get_last_word(sentence: str) -> str:
         """
         Возвращает последний токен из переданной строки пропуская символы, не
         являющиеся буквами (очень по-русски написано, да).
@@ -46,7 +35,8 @@ class Sentence:
         """
         return RegexpTokenizer(r'\w+').tokenize(sentence)[-1]
     
-    def get_endings(self, last_word: str) -> set:
+    @staticmethod
+    def get_endings(last_word: str) -> set:
         """
         Возвращает множество последних слогов слова (т.к. слово
         может иметь несколько произношений).
@@ -69,10 +59,11 @@ class Sentence:
 
         return endings
     
-    def count_syllables(self, sentence: str) -> int:
+    @staticmethod
+    def count_syllables(sentence: str) -> int:
         """
         Считает количество слогов в предложении.
-
+        
             sentence: предложение, для которого нужно посчитать
             количество слогов.
         """

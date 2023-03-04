@@ -1,7 +1,7 @@
 import markovify
 import sentence_generation
 
-MAX_TRIES = 1000
+MAX_TRIES = 10000
 
 class MarkovModel(markovify.Text):
     def __init__(self, **kwargs):
@@ -13,7 +13,7 @@ class MarkovModel(markovify.Text):
     def generate_rhyme(self, total_couplets=2, max_tries=MAX_TRIES):
         """
         Генерирует рифму с заданным количеством двустиший и попыток.
-
+        
             total_couplets: количество двустиший.
             max_tries: максимальное количество попыток
             придумать рифму к предложению. Если оно исчерпано, 
